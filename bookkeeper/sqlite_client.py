@@ -24,15 +24,16 @@ metadata.create_all(bind=engine)
 
 
 # Insert
-car = Category("Kia")
-a = inspect(Category)
+car = Expense(amount=100, category=1, expense_date=datetime.now(),
+                added_date=datetime.now(), comment='test', pk=1)
+# a = inspect(car)
 Session = sessionmaker(bind=engine)
 session = Session()
-p = Category(name="John")
-session.add(p)
+
+session.add( car )
 session.commit()
 
-dataclasses_sql.insert(metadata, car, check_exists=True)
+# dataclasses_sql.insert(metadata, car, check_exists=True)
 
 cats = '''
 продукты

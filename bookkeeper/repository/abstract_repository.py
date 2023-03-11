@@ -10,7 +10,6 @@
 from abc import ABC, abstractmethod
 from typing import Generic, TypeVar, Protocol, Any
 
-
 class Model(Protocol):  # pylint: disable=too-few-public-methods
     """
     Модель должна содержать атрибут pk
