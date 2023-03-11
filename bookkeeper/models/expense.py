@@ -17,7 +17,7 @@ class Expense:
     comment - комментарий
     pk - id записи в базе данных
     """
-    __tablename__="expanseTable"
+    __tablename__ = "expanseTable"
 
     amount: int
     category: int
@@ -25,4 +25,3 @@ class Expense:
     added_date: datetime = field(default_factory=datetime.now)
     comment: str = ''
     pk: int = 0
-

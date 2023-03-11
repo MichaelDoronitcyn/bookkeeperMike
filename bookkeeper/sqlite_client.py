@@ -4,12 +4,10 @@
 
 from bookkeeper.models.category import Category
 from bookkeeper.models.expense import Expense
-from bookkeeper.repository.memory_repository import MemoryRepository
 from bookkeeper.utils import read_tree
 
 from bookkeeper.repository.sqlite_init import checkAndCreate
 from bookkeeper.repository.sqlite_repository import SqliteRepository
-
 
 # cat_repo = MemoryRepository[Category]()
 # exp_repo = MemoryRepository[Expense]()
@@ -19,7 +17,7 @@ checkAndCreate('mikeExpenses.sqlite')
 clsCategory = Category('')
 sql_cat_repo = SqliteRepository[Category]('mikeExpenses.sqlite', clsCategory)
 
-clsExpense = Expense(0,1)
+clsExpense = Expense(0, 1)
 sql_exp_repo = SqliteRepository[Expense]('mikeExpenses.sqlite', clsExpense)
 #
 cats = '''
@@ -32,8 +30,8 @@ cats = '''
 одежда
 '''.splitlines()
 
-#создаем список категорий если только пустая база данных
-if len( sql_cat_repo.get_all() ) == 0 :
+# создаем список категорий если только пустая база данных
+if len(sql_cat_repo.get_all()) == 0:
     Category.create_from_tree(read_tree(cats), sql_cat_repo)
 
 # Category.create_from_tree(read_tree(cats), cat_repo)

@@ -3,7 +3,7 @@
 """
 from copy import deepcopy
 from itertools import count
-from typing import Any, Generic
+from typing import Any
 
 from bookkeeper.repository.abstract_repository import AbstractRepository, T
 
@@ -11,12 +11,13 @@ import sqlite3
 from bookkeeper.repository.sqlite_init import getFillInsert
 from bookkeeper.models.category import Category
 
+
 class SqliteRepository(AbstractRepository[T]):
     """
     Репозиторий, sqlite
     """
 
-    def __init__(self, dbName, clsExample:T) -> None:
+    def __init__(self, dbName, clsExample: T) -> None:
         self._container: dict[int, T] = {}
         self._counter = count(1)
 
@@ -34,7 +35,7 @@ class SqliteRepository(AbstractRepository[T]):
         print(c.lastrowid)
         # sql = 'select pk from '+ getattr(a, '__tablename__') + 'where'
         self.conn.commit()
-        #теперь обновляем содержимое контейнера в памяти
+        # теперь обновляем содержимое контейнера в памяти
         self.get_all()
         return obj.pk
 
@@ -47,19 +48,19 @@ class SqliteRepository(AbstractRepository[T]):
         for i in self.clsExample.__annotations__:
             fields += i + ','
             flx.append(i)
-        fields=fields[:-1]
+        fields = fields[:-1]
         if where is None:
             self._container.clear()
-            sql =  'select '+fields+' from '+self.clsExample.__tablename__
+            sql = 'select ' + fields + ' from ' + self.clsExample.__tablename__
             print(sql)
             c = self.conn.cursor()
             c.execute(sql)
             rows = c.fetchall()
             rez = []
             for i in rows:
-                rrr = deepcopy( self.clsExample )
-                for idx,j in enumerate(i):
-                    setattr(rrr,flx[idx], j)
+                rrr = deepcopy(self.clsExample)
+                for idx, j in enumerate(i):
+                    setattr(rrr, flx[idx], j)
                 rez.append(rrr)
                 self._container[rrr.pk] = rrr
                 # print(i)
@@ -67,7 +68,7 @@ class SqliteRepository(AbstractRepository[T]):
         # заполняем массив в памяти из базы данных
         self.get_all()
         return [obj for obj in self._container.values()
-                 if all(getattr(obj, attr) == value for attr, value in where.items())]
+                if all(getattr(obj, attr) == value for attr, value in where.items())]
 
     def update(self, obj: T) -> None:
         if obj.pk == 0:
@@ -83,7 +84,7 @@ class SqliteRepository(AbstractRepository[T]):
         try:
             self.conn = sqlite3.connect(db_file)
             print(sqlite3.version)
-        except Error as e:
+        except e:
             print(e)
 
 
