@@ -83,9 +83,6 @@ def checkAndCreate( db ):
 
 
     e = Expense(amount=100, category=1, comment='test' )
-    c.execute('drop table ' + e.__tablename__)
-    conn.commit()
-
 
     a = createTable(e, e.__tablename__)
     c.execute(a)
