@@ -15,8 +15,8 @@ cat_repo = MemoryRepository[Category]()
 exp_repo = MemoryRepository[Expense]()
 
 checkAndCreate('mikeExpenses.sqlite')
-
-sql_cat_repo = SqliteRepository[Category]('mikeExpenses.sqlite')
+clsCategory = Category('')
+sql_cat_repo = SqliteRepository[Category]('mikeExpenses.sqlite', clsCategory)
 
 #
 cats = '''
@@ -28,6 +28,10 @@ cats = '''
 книги
 одежда
 '''.splitlines()
+
+#создаем список категорий если только пустая база данных
+if len( sql_cat_repo.get_all() ) == 0 :
+    Category.create_from_tree(read_tree(cats), sql_cat_repo)
 
 Category.create_from_tree(read_tree(cats), cat_repo)
 

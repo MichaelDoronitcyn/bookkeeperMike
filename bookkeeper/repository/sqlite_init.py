@@ -6,10 +6,37 @@ import dataclasses
 from datetime import datetime
 import sqlite3
 
-from bookkeeper.repository.sqlite_repository import SqliteRepository
+# from bookkeeper.repository.sqlite_repository import SqliteRepository
 
 
 
+def getFillInsert( a ):
+    rez=getAllNames(a)
+    s = 'insert into ' + getattr(a, '__tablename__') + ' ('
+
+    for i in rez:
+        print(i, getattr(a, i))
+        s += i + ','
+    s = s[:-1]
+    s += ') values ('
+
+    for i in rez:
+        r = "0"
+        if getattr(a, i) is None:
+            r='0'
+        else:
+            r = str(getattr(a, i))
+        s += '"' + r + '",'
+    s = s[:-1]
+    s += ')'
+    return(s)
+def getAllNames( a ):
+    rez=[]
+    for i in a.__dataclass_fields__:
+        rez.append( a.__dataclass_fields__[i].name)
+
+    rez.remove('pk')
+    return(rez)
 def createTable( a, nameOfTable:str ):
 
 
@@ -53,7 +80,13 @@ def checkAndCreate( db ):
     conn = sqlite3.connect('mikeExpenses.sqlite')
     c = conn.cursor()
 
+
+
     e = Expense(amount=100, category=1, comment='test' )
+    c.execute('drop table ' + e.__tablename__)
+    conn.commit()
+
+
     a = createTable(e, e.__tablename__)
     c.execute(a)
     print(a)
@@ -63,6 +96,16 @@ def checkAndCreate( db ):
     a = createTable(e, e.__tablename__)
     print(a)
     c.execute(a)
-    print(e)
+    print(c)
 
     conn.commit()
+
+if __name__ == '__main__':
+
+    a = Category('aa',0)
+    print(getAllNames(a))
+
+    print( getFillInsert(a) )
+
+    e = Expense(amount=100, category=1, comment='test')
+    print(getFillInsert(e))

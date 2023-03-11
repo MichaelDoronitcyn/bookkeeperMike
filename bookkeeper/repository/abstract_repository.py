@@ -14,6 +14,7 @@ class Model(Protocol):  # pylint: disable=too-few-public-methods
     """
     Модель должна содержать атрибут pk
     """
+    __tablename__ : str
     pk: int
 
 
