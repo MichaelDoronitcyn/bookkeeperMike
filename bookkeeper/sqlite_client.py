@@ -6,35 +6,19 @@ from bookkeeper.models.category import Category
 from bookkeeper.models.expense import Expense
 from bookkeeper.repository.memory_repository import MemoryRepository
 from bookkeeper.utils import read_tree
-import sqlalchemy
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy import inspect
-import dataclasses_sql
+
+from bookkeeper.repository.sqlite_init import checkAndCreate
+from bookkeeper.repository.sqlite_repository import SqliteRepository
+
 
 cat_repo = MemoryRepository[Category]()
 exp_repo = MemoryRepository[Expense]()
 
-# Connect to database
-engine = sqlalchemy.create_engine("sqlite:///test.db")
-metadata = sqlalchemy.MetaData()
-#metadata
-metadata.create_all(bind=engine)
-# metadata.reflect()
+checkAndCreate('mikeExpenses.sqlite')
 
+sql_cat_repo = SqliteRepository[Category]('mikeExpenses.sqlite')
 
-
-# Insert
-car = Expense(amount=100, category=1, expense_date=datetime.now(),
-                added_date=datetime.now(), comment='test', pk=1)
-# a = inspect(car)
-Session = sessionmaker(bind=engine)
-session = Session()
-
-session.add( car )
-session.commit()
-
-# dataclasses_sql.insert(metadata, car, check_exists=True)
-
+#
 cats = '''
 продукты
     мясо
@@ -55,7 +39,7 @@ while True:
     if not cmd:
         continue
     if cmd == 'категории':
-        print(*cat_repo.get_all(), sep='\n')
+        print(*sql_cat_repo.get_all(), sep='\n')
     elif cmd == 'расходы':
         print(*exp_repo.get_all(), sep='\n')
     elif cmd[0].isdecimal():

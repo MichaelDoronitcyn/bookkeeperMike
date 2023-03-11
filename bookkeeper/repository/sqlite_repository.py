@@ -6,6 +6,7 @@ from itertools import count
 from typing import Any
 
 from bookkeeper.repository.abstract_repository import AbstractRepository, T
+import sqlite3
 
 
 class SqliteRepository(AbstractRepository[T]):
@@ -13,9 +14,10 @@ class SqliteRepository(AbstractRepository[T]):
     Репозиторий, sqlite
     """
 
-    def __init__(self) -> None:
+    def __init__(self, dbName) -> None:
         self._container: dict[int, T] = {}
         self._counter = count(1)
+        self.create_connection(dbName)
 
     def add(self, obj: T) -> int:
         if getattr(obj, 'pk', None) != 0:
@@ -41,3 +43,15 @@ class SqliteRepository(AbstractRepository[T]):
 
     def delete(self, pk: int) -> None:
         self._container.pop(pk)
+
+    def create_connection(self, db_file):
+        """ create a database connection to a SQLite database """
+        self.conn = None
+        try:
+            self.conn = sqlite3.connect(db_file)
+            print(sqlite3.version)
+        except Error as e:
+            print(e)
+        finally:
+            if self.conn:
+                self.conn.close()
