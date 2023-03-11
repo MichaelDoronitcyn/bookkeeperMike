@@ -6,13 +6,13 @@ from bookkeeper.models.category import Category
 from bookkeeper.models.expense import Expense
 from bookkeeper.utils import read_tree
 
-from bookkeeper.repository.sqlite_init import checkAndCreate
+from bookkeeper.repository.sqlite_init import check_and_create
 from bookkeeper.repository.sqlite_repository import SqliteRepository
 
 # cat_repo = MemoryRepository[Category]()
 # exp_repo = MemoryRepository[Expense]()
 
-checkAndCreate('mikeExpenses.sqlite')
+check_and_create('mikeExpenses.sqlite')
 
 clsCategory = Category('')
 sql_cat_repo = SqliteRepository[Category]('mikeExpenses.sqlite', clsCategory)
