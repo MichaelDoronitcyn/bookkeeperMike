@@ -41,15 +41,15 @@ class BudgetView(QWidget):
         self.update_sum()
 
     def update_sum(self):
-        sql_exp_repo = SqliteRepository[Expense]('mikeExpenses.sqlite', Expense(0,0))
+        sql_exp_repo = SqliteRepository[Expense]('mikeExpenses.sqlite', Expense(0, 0))
         exps = sql_exp_repo.get_all()
         today = datetime.datetime.now()
 
         sum_day = 0
-        sum_week =0
-        sum_month=0
+        sum_week = 0
+        sum_month = 0
         for exp in exps:
-            datetime_object = datetime.datetime.fromisoformat(exp.expense_date)
+            datetime_object = exp.expense_date
             days = (today - datetime_object).days
             if days == 0:
                 sum_day += exp.amount

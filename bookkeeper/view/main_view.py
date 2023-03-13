@@ -1,12 +1,6 @@
-import sys
-from PyQt6.QtGui import QIcon, QStandardItem
+from typing import Any
 
-from PyQt6.QtCore import (QDate, QDateTime, QSortFilterProxyModel, Qt,
-                          QTime)
-from PyQt6.QtGui import QStandardItemModel
-
-from PyQt6.QtWidgets import (QApplication, QCheckBox, QComboBox, QGridLayout,
-                             QGroupBox, QHBoxLayout, QLabel, QLineEdit, QTreeView, QVBoxLayout,
+from PyQt6.QtWidgets import (QGroupBox, QLineEdit, QVBoxLayout,
                              QWidget, QFormLayout, QPushButton, QDialog, QDialogButtonBox, QAbstractItemView)
 
 from bookkeeper.models.category import Category
@@ -23,7 +17,8 @@ class MainApplication(QWidget):
     def __init__(self):
         super().__init__()
 
-        self.expanses_view: ExpansesView = None
+        self.expanses_view = Any
+        self.dataGroupBox = Any
         self.title = 'Mike Dor'
         self.left = 100
         self.top = 100
@@ -66,14 +61,13 @@ class MainApplication(QWidget):
 
         self.show()
 
-    def get_insert_wd(self)->QWidget:
+    def get_insert_wd(self) -> QWidget:
         wid = QWidget()
-        form=QFormLayout()
+        form = QFormLayout()
 
-
-        form.addRow("Расходы", self.expanses )
+        form.addRow("Расходы", self.expanses)
         form.addRow("Комментарий", self.comment)
-        form.addRow( self.but_category )
+        form.addRow(self.but_category)
         form.addRow("Категория", self.category)
         form.addRow(self.but_new)
         wid.setLayout(form)
@@ -84,10 +78,9 @@ class MainApplication(QWidget):
 
         dlg = CustomDialog()
         if dlg.exec():
-            print("in")
+            text = ''
             for ix in dlg.tree.selectedIndexes():
                 text = ix.data()  # or ix.data()
-            print(text)
             self.category.setText(text)
         else:
             print("Cancel!")
@@ -105,6 +98,7 @@ class MainApplication(QWidget):
         sql_exp_repo.add(cls_expense)
         self.expanses_view.update_table()
 
+
 class CustomDialog(QDialog):
     def __init__(self):
         super().__init__()
@@ -118,6 +112,6 @@ class CustomDialog(QDialog):
         self.layout = QVBoxLayout()
         self.tree = CategoryView()
         self.tree.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
-        self.layout.addWidget( self.tree )
+        self.layout.addWidget(self.tree)
         self.layout.addWidget(self.buttonBox)
         self.setLayout(self.layout)
