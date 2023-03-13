@@ -13,15 +13,9 @@ class CategoryView(QTreeView):
         super().__init__()
 
         self.setModel(self.get_model())
-
-            # span container columns
-         # self.setFirstColumnSpanned(i, self.rootIndex(), True)
-        # self.setRootIsDecorated(False)
         self.setAlternatingRowColors(True)
-        # self.setSelectionMode(1)
-        # self.setEditTriggers(QTreeView.NoEditTriggers)
 
-    def get_model(self)->QStandardItemModel:
+    def get_model(self) -> QStandardItemModel:
         model = QStandardItemModel()
         sql_cat_repo = SqliteRepository[Category]('mikeExpenses.sqlite', Category(""))
         categories = sql_cat_repo.get_all()
@@ -34,9 +28,9 @@ class CategoryView(QTreeView):
         for category in categories:
             if category.parent > 0:
                 parent1 = cdict[category.parent]
-                parent1.appendRow( cdict[ category.pk])
+                parent1.appendRow(cdict[category.pk])
             # self.setFirstColumnSpanned(i, self.rootIndex(), True)
             if category.parent == 0:
-                model.appendRow(cdict[ category.pk])
+                model.appendRow(cdict[category.pk])
 
         return model

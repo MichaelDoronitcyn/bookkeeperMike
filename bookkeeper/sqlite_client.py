@@ -1,7 +1,7 @@
 """
 Простой тестовый скрипт для терминала
 """
-
+from bookkeeper.models.budget import Budget
 from bookkeeper.models.category import Category
 from bookkeeper.models.expense import Expense
 from bookkeeper.utils import read_tree
@@ -9,16 +9,11 @@ from bookkeeper.utils import read_tree
 from bookkeeper.repository.sqlite_init import check_and_create
 from bookkeeper.repository.sqlite_repository import SqliteRepository
 
-# cat_repo = MemoryRepository[Category]()
-# exp_repo = MemoryRepository[Expense]()
-
 check_and_create('mikeExpenses.sqlite')
-
-cls_category = Category('')
-sql_cat_repo = SqliteRepository[Category]('mikeExpenses.sqlite', cls_category)
-
-cls_expense = Expense(0, 1)
-sql_exp_repo = SqliteRepository[Expense]('mikeExpenses.sqlite', cls_expense)
+sql_bud_repo = SqliteRepository[Budget]('mikeExpenses.sqlite', Budget(0))
+sql_bud_repo.get_all()
+sql_cat_repo = SqliteRepository[Category]('mikeExpenses.sqlite', Category(''))
+sql_exp_repo = SqliteRepository[Expense]('mikeExpenses.sqlite', Expense(0, 1))
 #
 cats = '''
 продукты

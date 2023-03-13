@@ -5,12 +5,14 @@ import datetime
 import sqlite3
 from typing import Tuple
 
+from bookkeeper.models.budget import Budget
 from bookkeeper.models.expense import Expense
 from bookkeeper.models.category import Category
 from bookkeeper.repository.abstract_repository import T
+
+
 # from dataclasses import dataclass
 # from datetime import datetime
-
 
 
 # from bookkeeper.repository.sqlite_repository import SqliteRepository
@@ -30,7 +32,6 @@ def get_fill_insert(obj: T) -> str:
     sql += ') values ('
 
     for i in rez:
-        rez_str = "0"
         if getattr(obj, i) is None:
             rez_str = '0'
         else:
@@ -107,15 +108,22 @@ def check_and_create(data_base_name: str) -> None:
 
     # print(obj)
 
-    category = Category("name", 0)
-    sql = create_table(obj, category.__tablename__)
+    category_loc = Category("name", 0)
+    sql = create_table(category_loc, category_loc.__tablename__)
+    print(sql)
+    cursor.execute(sql)
+    print(cursor)
+
+    budget = Budget(1000)
+    sql = create_table(budget, budget.__tablename__)
     print(sql)
     cursor.execute(sql)
     print(cursor)
 
     connection.commit()
 
-def get_fields_names( obj : T) -> Tuple[str, list[str]]:
+
+def get_fields_names(obj: T) -> Tuple[str, list[str]]:
     """
     возвращает  именя полей и список полей в классе
     """
@@ -126,7 +134,6 @@ def get_fields_names( obj : T) -> Tuple[str, list[str]]:
         flx.append(row)
     fields = fields[:-1]
     return fields, flx
-
 
 
 if __name__ == '__main__':

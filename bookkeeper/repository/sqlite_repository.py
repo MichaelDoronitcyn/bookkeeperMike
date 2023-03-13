@@ -20,7 +20,7 @@ class SqliteRepository(AbstractRepository[T]):
     def __init__(self, data_base_name: str, cls_example: T) -> None:
         self._container: dict[int, T] = {}
         self._counter = count(1)
-
+        self.connection = Any
         self.cls_example = cls_example
         self.create_connection(data_base_name)
 
@@ -92,7 +92,7 @@ class SqliteRepository(AbstractRepository[T]):
         # заполняем массив в памяти из базы данных
         self.get_all()
 
-    def create_connection(self, db_file: str)->None:
+    def create_connection(self, db_file: str) -> None:
         """ create a database connection to a SQLite database """
         # self.connection = None
         try:

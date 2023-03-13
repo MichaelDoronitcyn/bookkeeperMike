@@ -3,6 +3,7 @@
 """
 from PyQt6.QtWidgets import QWidget, QTableWidget, QVBoxLayout, QHeaderView, QTableWidgetItem
 
+from bookkeeper.models.category import Category
 from bookkeeper.models.expense import Expense
 from bookkeeper.repository.sqlite_repository import SqliteRepository
 
@@ -26,15 +27,17 @@ class ExpansesView(QWidget):
         self.update_table()
 
     def update_table(self):
-        cls_expense = Expense(0, 1)
-        sql_exp_repo = SqliteRepository[Expense]('mikeExpenses.sqlite', cls_expense)
+        sql_exp_repo = SqliteRepository[Expense]('mikeExpenses.sqlite', Expense(0, 1))
+        sql_cat_repo = SqliteRepository[Category]('mikeExpenses.sqlite', Category(''))
+        sql_cat_repo.get_all()
         expances = sql_exp_repo.get_all()
         while self.table.rowCount() > 0:
             self.table.removeRow(0)
+        row_position = 0
         for exp in expances:
-            row_position = self.table.rowCount()
             self.table.insertRow(row_position)
-            self.table.setItem(row_position, 0, QTableWidgetItem(exp.added_date))
+            self.table.setItem(row_position, 0, QTableWidgetItem(exp.added_date.__str__()))
             self.table.setItem(row_position, 1, QTableWidgetItem(str(exp.amount)))
-            self.table.setItem(row_position, 2, QTableWidgetItem(str(exp.category)))
+            name = sql_cat_repo.get(exp.category).name
+            self.table.setItem(row_position, 2, QTableWidgetItem(name))
             self.table.setItem(row_position, 3, QTableWidgetItem(exp.comment))
