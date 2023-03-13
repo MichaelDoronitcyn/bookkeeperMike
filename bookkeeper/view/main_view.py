@@ -22,6 +22,8 @@ class MainApplication(QWidget):
 
     def __init__(self):
         super().__init__()
+
+        self.expanses_view: ExpansesView = None
         self.title = 'Mike Dor'
         self.left = 100
         self.top = 100
@@ -51,7 +53,8 @@ class MainApplication(QWidget):
 
         data_layout = QVBoxLayout()
         # dataLayout.addWidget(self.dataView)
-        data_layout.addWidget(ExpansesView())
+        self.expanses_view = ExpansesView()
+        data_layout.addWidget(self.expanses_view)
         data_layout.addWidget(BudgetView())
         self.dataGroupBox.setLayout(data_layout)
 
@@ -91,11 +94,16 @@ class MainApplication(QWidget):
 
     def button_new(self):
         sql_cat_repo = SqliteRepository[Category]('mikeExpenses.sqlite', Category(''))
+        sql_cat_repo.get_all()
+        cat = sql_cat_repo.get_all({'name': self.category.text()})[0]
         print(self.expanses.text())
         print(self.category.text())
         print(self.comment.text())
-        clsExpense = Expense(int(self.expanses.text()))
-        sql_exp_repo = SqliteRepository[Expense]('mikeExpenses.sqlite', clsExpense)
+        cls_expense = Expense(int(self.expanses.text()), cat.pk)
+        cls_expense.comment = self.comment.text()
+        sql_exp_repo = SqliteRepository[Expense]('mikeExpenses.sqlite', cls_expense)
+        sql_exp_repo.add(cls_expense)
+        self.expanses_view.update_table()
 
 class CustomDialog(QDialog):
     def __init__(self):

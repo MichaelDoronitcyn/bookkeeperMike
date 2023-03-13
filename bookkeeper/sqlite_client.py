@@ -14,11 +14,11 @@ from bookkeeper.repository.sqlite_repository import SqliteRepository
 
 check_and_create('mikeExpenses.sqlite')
 
-clsCategory = Category('')
-sql_cat_repo = SqliteRepository[Category]('mikeExpenses.sqlite', clsCategory)
+cls_category = Category('')
+sql_cat_repo = SqliteRepository[Category]('mikeExpenses.sqlite', cls_category)
 
-clsExpense = Expense(0, 1)
-sql_exp_repo = SqliteRepository[Expense]('mikeExpenses.sqlite', clsExpense)
+cls_expense = Expense(0, 1)
+sql_exp_repo = SqliteRepository[Expense]('mikeExpenses.sqlite', cls_expense)
 #
 cats = '''
 продукты
