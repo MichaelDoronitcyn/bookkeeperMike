@@ -20,7 +20,7 @@ class SqliteRepository(AbstractRepository[T]):
     def __init__(self, data_base_name: str, cls_example: T) -> None:
         self._container: dict[int, T] = {}
         self._counter = count(1)
-        self.connection = Any
+        # self.connection = Any
         self.cls_example = cls_example
         self.create_connection(data_base_name)
 
@@ -39,8 +39,8 @@ class SqliteRepository(AbstractRepository[T]):
         self.get_all()
         return obj.pk
 
-    def get(self, pk: int) -> T | None:
-        return self._container.get(pk)
+    def get(self, pub_key: int) -> T:
+        return self._container.get(pub_key)
 
     def get_all(self, where: dict[str, Any] | None = None) -> list[T]:
         fields, flx = get_fields_names(self.cls_example)
@@ -83,8 +83,8 @@ class SqliteRepository(AbstractRepository[T]):
         self.get_all()
         # self._container[obj.pk] = obj
 
-    def delete(self, pk: int) -> None:
-        sql = f'delete from {self.cls_example.__tablename__} where pk="{pk}" '
+    def delete(self, pub_key: int) -> None:
+        sql = f'delete from {self.cls_example.__tablename__} where pk="{pub_key}" '
         print(sql)
         cursor = self.connection.cursor()
         cursor.execute(sql)
@@ -98,7 +98,7 @@ class SqliteRepository(AbstractRepository[T]):
         try:
             self.connection = sqlite3.connect(db_file)
             print(sqlite3.version)
-        except Exception as exception:
+        except sqlite3.Error as exception:
             print(exception)
 
 

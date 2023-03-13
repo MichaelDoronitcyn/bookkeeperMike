@@ -10,6 +10,9 @@ from bookkeeper.repository.sqlite_repository import SqliteRepository
 
 
 class ExpansesView(QWidget):
+    """
+      виджет просмотра расходов
+    """
     def __init__(self):
         super().__init__()
         self.table = QTableWidget()
@@ -17,7 +20,7 @@ class ExpansesView(QWidget):
 
         self.init_ui()
 
-    def init_ui(self):
+    def init_ui(self) -> None:
         """
         инит юи
         """
@@ -31,7 +34,7 @@ class ExpansesView(QWidget):
         self.setLayout(self.vertical_box)
         self.update_table()
 
-    def update_table(self):
+    def update_table(self) -> None:
         """
         обновление данных
         """

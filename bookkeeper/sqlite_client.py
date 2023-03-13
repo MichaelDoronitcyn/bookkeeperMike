@@ -16,13 +16,13 @@ sql_cat_repo = SqliteRepository[Category]('mikeExpenses.sqlite', Category(''))
 sql_exp_repo = SqliteRepository[Expense]('mikeExpenses.sqlite', Expense(0, 1))
 #
 cats_tree = '''
-продукты
-    мясо
-        сырое мясо
-        мясные продукты
-    сладости
-книги
-одежда
+Продукты
+    Мясо
+        Сырое мясо
+        Мясные продукты
+    Сладости
+Книги
+Одежда
 '''.splitlines()
 
 # создаем список категорий если только пустая база данных

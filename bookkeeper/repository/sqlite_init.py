@@ -1,7 +1,7 @@
 """
 Модуль описывает утилиты для организации работы с sqlite
 """
-import datetime
+
 import sqlite3
 from typing import Tuple
 
@@ -64,30 +64,30 @@ def create_table(obj: T, name_of_table: str) -> str:
     #     vlan         text,
     #     interface    text
     # );
-
-    s_init = f'create table if not exists {name_of_table} ('
-    # print(a.__dir__())
-    print('....', obj.__annotations__)
-    start_b = True
-    for i in obj.__dataclass_fields__:
-        print(obj.__dataclass_fields__[i].type)
-        if not start_b:
-            s_init += ','
-        if obj.__dataclass_fields__[i].type is datetime.datetime:
-            s_init += obj.__dataclass_fields__[i].name + ' text'
-        if obj.__dataclass_fields__[i].type is str:
-            s_init += obj.__dataclass_fields__[i].name + ' text'
-        if obj.__dataclass_fields__[i].type is int:
-            s_init += obj.__dataclass_fields__[i].name + ' integer'
-            # INTEGER PRIMARY KEY
-            if obj.__dataclass_fields__[i].name == 'pk':
-                s_init += ' PRIMARY KEY'
-        if obj.__dataclass_fields__[i].type in [int | None]:
-            s_init += obj.__dataclass_fields__[i].name + ' integer'
-        if obj.__dataclass_fields__[i].type is float:
-            s_init += obj.__dataclass_fields__[i].name + ' real'
-        if start_b:
-            start_b = False
+    s_init = ''
+    # s_init = f'create table if not exists {name_of_table} ('
+    # # print(a.__dir__())
+    # print('....', obj.__annotations__)
+    # start_b = True
+    # for i in obj.__dataclass_fields__:
+    #     print(obj.__dataclass_fields__[i].type)
+    #     if not start_b:
+    #         s_init += ','
+    #     if obj.__dataclass_fields__[i].type is datetime.datetime:
+    #         s_init += obj.__dataclass_fields__[i].name + ' text'
+    #     if obj.__dataclass_fields__[i].type is str:
+    #         s_init += obj.__dataclass_fields__[i].name + ' text'
+    #     if obj.__dataclass_fields__[i].type is int:
+    #         s_init += obj.__dataclass_fields__[i].name + ' integer'
+    #         # INTEGER PRIMARY KEY
+    #         if obj.__dataclass_fields__[i].name == 'pk':
+    #             s_init += ' PRIMARY KEY'
+    #     if obj.__dataclass_fields__[i].type in [int | None]:
+    #         s_init += obj.__dataclass_fields__[i].name + ' integer'
+    #     if obj.__dataclass_fields__[i].type is float:
+    #         s_init += obj.__dataclass_fields__[i].name + ' real'
+    #     if start_b:
+    #         start_b = False
     s_init += ');'
     # print(s_init)
     return s_init
@@ -108,8 +108,8 @@ def check_and_create(data_base_name: str) -> None:
 
     # print(obj)
 
-    category_loc = Category("name", 0)
-    sql = create_table(category_loc, category_loc.__tablename__)
+    category = Category("name", 0)
+    sql = create_table(category, category.__tablename__)
     print(sql)
     cursor.execute(sql)
     print(cursor)

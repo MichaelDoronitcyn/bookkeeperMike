@@ -9,6 +9,9 @@ from bookkeeper.repository.sqlite_repository import SqliteRepository
 
 
 class CategoryView(QTreeView):
+    """
+    виджет просмотра Категорий
+    """
     def __init__(self):
         super().__init__()
 
@@ -16,6 +19,9 @@ class CategoryView(QTreeView):
         self.setAlternatingRowColors(True)
 
     def get_model(self) -> QStandardItemModel:
+        """
+        данные для отображения в дереве
+        """
         model = QStandardItemModel()
         sql_cat_repo = SqliteRepository[Category]('mikeExpenses.sqlite', Category(""))
         categories = sql_cat_repo.get_all()
@@ -34,3 +40,9 @@ class CategoryView(QTreeView):
                 model.appendRow(cdict[category.pk])
 
         return model
+
+    def set_model(self) -> None:
+        """
+        установить модель
+        """
+        return

@@ -25,10 +25,7 @@ class MainApplication(QWidget):
         self.expanses_view = Any
         self.data_group_box = Any
         self.title = 'Mike Dor'
-        self.left = 100
-        self.top = 100
-        self.width = 800
-        self.height = 600
+
         self.expanses = QLineEdit(self)
         self.expanses.setText('0')
         self.comment = QLineEdit(self)
@@ -43,12 +40,12 @@ class MainApplication(QWidget):
 
         self.init_ui()
 
-    def init_ui(self):
+    def init_ui(self) -> None:
         """
         инициализация юи
         """
         self.setWindowTitle(self.title)
-        self.setGeometry(self.left, self.top, self.width, self.height)
+        self.setGeometry(100, 100, 800, 600)
 
         self.data_group_box = QGroupBox("Последние расходы")
         # self.dataView = CategoryView()  # QTreeView()
@@ -83,7 +80,7 @@ class MainApplication(QWidget):
         wid.setLayout(form)
         return wid
 
-    def button_clicked(self):
+    def button_clicked(self) -> None:
         """
         выбор названия категории
         """
@@ -97,7 +94,7 @@ class MainApplication(QWidget):
         else:
             print("Cancel!")
 
-    def button_new(self):
+    def button_new(self) -> None:
         """
         запись новых расходов
         """
@@ -118,6 +115,7 @@ class CustomDialog(QDialog):
     """
     диалог выбора категории
     """
+
     def __init__(self):
         super().__init__()
 
@@ -134,3 +132,15 @@ class CustomDialog(QDialog):
         self.layout.addWidget(self.tree)
         self.layout.addWidget(self.button_box)
         self.setLayout(self.layout)
+
+    def get(self) -> None:
+        """
+        получить ид
+        """
+        return
+
+    def set(self) -> None:
+        """
+        установить ид
+        """
+        return
