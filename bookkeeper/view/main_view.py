@@ -1,7 +1,8 @@
 from typing import Any
 
 from PyQt6.QtWidgets import (QGroupBox, QLineEdit, QVBoxLayout,
-                             QWidget, QFormLayout, QPushButton, QDialog, QDialogButtonBox, QAbstractItemView)
+                             QWidget, QFormLayout, QPushButton,
+                             QDialog, QDialogButtonBox, QAbstractItemView)
 
 from bookkeeper.models.category import Category
 from bookkeeper.models.expense import Expense
@@ -105,7 +106,8 @@ class CustomDialog(QDialog):
 
         self.setWindowTitle("выбор категории")
 
-        self.buttonBox = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel)
+        self.buttonBox = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
+                                          QDialogButtonBox.StandardButton.Cancel)
         self.buttonBox.accepted.connect(self.accept)
         self.buttonBox.rejected.connect(self.reject)
 

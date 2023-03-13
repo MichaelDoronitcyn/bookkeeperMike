@@ -1,7 +1,8 @@
 """
 класс просмотра расходов
 """
-from PyQt6.QtWidgets import QWidget, QTableWidget, QVBoxLayout, QHeaderView, QTableWidgetItem
+from PyQt6.QtWidgets import QWidget, QTableWidget, QVBoxLayout, \
+    QHeaderView, QTableWidgetItem
 
 from bookkeeper.models.category import Category
 from bookkeeper.models.expense import Expense
@@ -19,7 +20,8 @@ class ExpansesView(QWidget):
     def init_ui(self):
         self.table.setRowCount(0)
         self.table.setColumnCount(4)
-        self.table.setHorizontalHeaderLabels(["Дата", "Сумма", "Категория", "Комментарий"])
+        self.table.setHorizontalHeaderLabels(
+            ["Дата", "Сумма", "Категория", "Комментарий"])
         self.table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
         self.table.verticalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
         self.vBox.addWidget(self.table)
@@ -36,7 +38,8 @@ class ExpansesView(QWidget):
         row_position = 0
         for exp in expances:
             self.table.insertRow(row_position)
-            self.table.setItem(row_position, 0, QTableWidgetItem(exp.added_date.__str__()))
+            self.table.setItem(row_position, 0,
+                               QTableWidgetItem(exp.added_date.__str__()))
             self.table.setItem(row_position, 1, QTableWidgetItem(str(exp.amount)))
             name = sql_cat_repo.get(exp.category).name
             self.table.setItem(row_position, 2, QTableWidgetItem(name))

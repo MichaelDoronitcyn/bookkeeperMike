@@ -3,7 +3,8 @@
 """
 import datetime
 
-from PyQt6.QtWidgets import QWidget, QTableWidget, QVBoxLayout, QHeaderView, QTableWidgetItem, QPushButton
+from PyQt6.QtWidgets import QWidget, QTableWidget, QVBoxLayout, QHeaderView, \
+    QTableWidgetItem, QPushButton
 
 from bookkeeper.models.budget import Budget
 from bookkeeper.models.expense import Expense
