@@ -1,8 +1,11 @@
+"""
+создает главное окно
+"""
 from typing import Any
 
-from PyQt6.QtWidgets import (QGroupBox, QLineEdit, QVBoxLayout,
-                             QWidget, QFormLayout, QPushButton,
-                             QDialog, QDialogButtonBox, QAbstractItemView)
+from PyQt6.QtWidgets import QWidget, QLineEdit, QPushButton, QGroupBox, QVBoxLayout, \
+    QDialog, QDialogButtonBox, \
+    QAbstractItemView, QFormLayout
 
 from bookkeeper.models.category import Category
 from bookkeeper.models.expense import Expense
@@ -13,19 +16,19 @@ from bookkeeper.view.expansesview import ExpansesView
 
 
 class MainApplication(QWidget):
-    FROM, SUBJECT, DATE = range(3)
+    """
+     главное приложение
+    """
 
     def __init__(self):
         super().__init__()
-
         self.expanses_view = Any
-        self.dataGroupBox = Any
+        self.data_group_box = Any
         self.title = 'Mike Dor'
         self.left = 100
         self.top = 100
         self.width = 800
         self.height = 600
-
         self.expanses = QLineEdit(self)
         self.expanses.setText('0')
         self.comment = QLineEdit(self)
@@ -41,10 +44,13 @@ class MainApplication(QWidget):
         self.init_ui()
 
     def init_ui(self):
+        """
+        инициализация юи
+        """
         self.setWindowTitle(self.title)
         self.setGeometry(self.left, self.top, self.width, self.height)
 
-        self.dataGroupBox = QGroupBox("Последние расходы")
+        self.data_group_box = QGroupBox("Последние расходы")
         # self.dataView = CategoryView()  # QTreeView()
 
         data_layout = QVBoxLayout()
@@ -52,10 +58,10 @@ class MainApplication(QWidget):
         self.expanses_view = ExpansesView()
         data_layout.addWidget(self.expanses_view)
         data_layout.addWidget(BudgetView())
-        self.dataGroupBox.setLayout(data_layout)
+        self.data_group_box.setLayout(data_layout)
 
         main_layout = QVBoxLayout()
-        main_layout.addWidget(self.dataGroupBox)
+        main_layout.addWidget(self.data_group_box)
         main_layout.addWidget(self.get_insert_wd())
 
         self.setLayout(main_layout)
@@ -63,6 +69,9 @@ class MainApplication(QWidget):
         self.show()
 
     def get_insert_wd(self) -> QWidget:
+        """
+        виджет кнопок управления
+        """
         wid = QWidget()
         form = QFormLayout()
 
@@ -74,19 +83,24 @@ class MainApplication(QWidget):
         wid.setLayout(form)
         return wid
 
-    def button_clicked(self, s):
-        print("click", s)
+    def button_clicked(self):
+        """
+        выбор названия категории
+        """
 
         dlg = CustomDialog()
         if dlg.exec():
             text = ''
-            for ix in dlg.tree.selectedIndexes():
-                text = ix.data()  # or ix.data()
+            for idx in dlg.tree.selectedIndexes():
+                text = idx.data()  # or ix.data()
             self.category.setText(text)
         else:
             print("Cancel!")
 
     def button_new(self):
+        """
+        запись новых расходов
+        """
         sql_cat_repo = SqliteRepository[Category]('mikeExpenses.sqlite', Category(''))
         sql_cat_repo.get_all()
         cat = sql_cat_repo.get_all({'name': self.category.text()})[0]
@@ -101,19 +115,22 @@ class MainApplication(QWidget):
 
 
 class CustomDialog(QDialog):
+    """
+    диалог выбора категории
+    """
     def __init__(self):
         super().__init__()
 
         self.setWindowTitle("выбор категории")
 
-        self.buttonBox = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
-                                          QDialogButtonBox.StandardButton.Cancel)
-        self.buttonBox.accepted.connect(self.accept)
-        self.buttonBox.rejected.connect(self.reject)
+        self.button_box = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
+                                           QDialogButtonBox.StandardButton.Cancel)
+        self.button_box.accepted.connect(self.accept)
+        self.button_box.rejected.connect(self.reject)
 
         self.layout = QVBoxLayout()
         self.tree = CategoryView()
         self.tree.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
         self.layout.addWidget(self.tree)
-        self.layout.addWidget(self.buttonBox)
+        self.layout.addWidget(self.button_box)
         self.setLayout(self.layout)

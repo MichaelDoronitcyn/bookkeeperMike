@@ -15,7 +15,7 @@ sql_bud_repo.get_all()
 sql_cat_repo = SqliteRepository[Category]('mikeExpenses.sqlite', Category(''))
 sql_exp_repo = SqliteRepository[Expense]('mikeExpenses.sqlite', Expense(0, 1))
 #
-cats = '''
+cats_tree = '''
 продукты
     мясо
         сырое мясо
@@ -27,7 +27,7 @@ cats = '''
 
 # создаем список категорий если только пустая база данных
 if len(sql_cat_repo.get_all()) == 0:
-    Category.create_from_tree(read_tree(cats), sql_cat_repo)
+    Category.create_from_tree(read_tree(cats_tree), sql_cat_repo)
 
 # Category.create_from_tree(read_tree(cats), cat_repo)
 
