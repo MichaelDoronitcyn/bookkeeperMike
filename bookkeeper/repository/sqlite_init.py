@@ -3,6 +3,7 @@
 """
 import datetime
 import sqlite3
+from typing import Tuple
 
 from bookkeeper.models.expense import Expense
 from bookkeeper.models.category import Category
@@ -104,17 +105,17 @@ def check_and_create(data_base_name: str) -> None:
     print(sql)
     cursor.execute(sql)
 
-    print(obj)
+    # print(obj)
 
-    obj = Category("name", 0)
-    sql = create_table(obj, obj.__tablename__)
+    category = Category("name", 0)
+    sql = create_table(obj, category.__tablename__)
     print(sql)
     cursor.execute(sql)
     print(cursor)
 
     connection.commit()
 
-def get_fields_names( obj : T) -> [str, list[str]]:
+def get_fields_names( obj : T) -> Tuple[str, list[str]]:
     """
     возвращает  именя полей и список полей в классе
     """
